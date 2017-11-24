@@ -14,7 +14,7 @@ public class TravelocityHomePage extends BasePage{
 	public TravelocityHomePage(WebDriver pDriver) {
 		super(pDriver);
 		pDriver.get("https://www.travelocity.com/");
-		getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("tab-flight-tab-hp")));
+		getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("package-origin-hp-package")));
 	}
 	
 	//Locators......!!!!!!!!!!!!!!!!!
@@ -52,9 +52,27 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(id="tab-package-tab-hp")
 	private WebElement flightPlusHotelButton;
 	
+	@FindBy(id="search-button-hp-package")
+	private WebElement flightPlusHotelSearchButton;
+	
+	@FindBy(id="package-origin-hp-package")
+	private WebElement flightPlusHotelDepartureInput;
+	
+	@FindBy(id="package-destination-hp-package")
+	private WebElement flightPlusHotelReturnInput;
+	
+	@FindBy(id="package-departing-hp-package")
+	private WebElement packageDepartureDateInput;
+	
+	@FindBy(id="package-returning-hp-package")
+	private WebElement packageReturnDateInput;
 	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
+	
+	public void clickOnFlightPlusHotelButton(){
+		flightPlusHotelButton.click();
+	}
 	
 	public void clickOnFligthButton(){
 		flightsButton.click();
@@ -69,19 +87,25 @@ public class TravelocityHomePage extends BasePage{
 		adultsDropDownSelect.selectByValue(adultPassangers+"");;
 	}
 	
-	public void selectDepartureCity(String departureAirportCode){
+	public void selectFlightDepartureCity(String departureAirportCode){
 		departureFlightAirportInput.sendKeys(departureAirportCode);
 		departureFlightAirportInput.sendKeys(Keys.TAB);
 	}
 	
-	public void selectArrivalCity(String arrivalAirportCode){
+	public void selectFlightArrivalCity(String arrivalAirportCode){
 		arrivalFlightAirportInput.sendKeys(arrivalAirportCode);
 		arrivalFlightAirportInput.sendKeys(Keys.TAB);
 	}
 	
-	public void selectDepartureDate(String year, String month, String day){
+	public void selectDepartureDate(String year, String month, String day, String type){
 		boolean found = false;
-		departureFlightDate.click();
+		if(type.equals("flight")){
+			departureFlightDate.click();
+		}else{
+			if(type.equals("package")){
+				packageDepartureDateInput.click();
+			}
+		}
 		WebElement date=null;
 		do{
 			try{
@@ -95,9 +119,15 @@ public class TravelocityHomePage extends BasePage{
 		date.click();
 	}
 
-	public void selectArrivalDate(String year, String month, String day){
+	public void selectArrivalDate(String year, String month, String day, String type){
 		boolean found = false;
-		returningFlightDate.click();
+		if(type.equals("flight")){
+			returningFlightDate.click();
+		}else{
+			if(type.equals("package")){
+				packageReturnDateInput.click();
+			}
+		}
 		WebElement date=null;
 		do{
 			try{
@@ -114,6 +144,21 @@ public class TravelocityHomePage extends BasePage{
 	public FlightsSearchResultsPage clickOnSearchButton(){
 		searchButton.click();
 		return new FlightsSearchResultsPage(getDriver());
+	}
+	
+	public FlightsPlusHotelSearchResultsPage clickOnFlightPlusHotelSearchButton(){
+		flightPlusHotelSearchButton.click();
+		return new FlightsPlusHotelSearchResultsPage(getDriver());
+	}
+	
+	public void selectPackageDepartureCity(String departureAirportCode){
+		flightPlusHotelDepartureInput.sendKeys(departureAirportCode);
+		flightPlusHotelDepartureInput.sendKeys(Keys.TAB);
+	}
+	
+	public void selectPackageArrivalCity(String arrivalAirportCode){
+		flightPlusHotelReturnInput.sendKeys(arrivalAirportCode);
+		flightPlusHotelReturnInput.sendKeys(Keys.TAB);
 	}
 	
 		

@@ -15,6 +15,12 @@ public abstract class BasePage {
 		driver = pDriver;
 	}
 	
+	public BasePage(WebDriver pDriver, int timeOutInSec){
+		PageFactory.initElements(pDriver, this);
+		wait = new WebDriverWait(pDriver, timeOutInSec);
+		driver = pDriver;
+	}
+	
 	public WebDriverWait getWait(){
 		return wait;
 	}
