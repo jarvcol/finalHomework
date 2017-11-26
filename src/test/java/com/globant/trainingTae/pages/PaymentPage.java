@@ -10,7 +10,7 @@ public class PaymentPage extends BasePage{
 
 	public PaymentPage(WebDriver pDriver) {
 		super(pDriver);
-		getWait().until(ExpectedConditions.visibilityOf(tripSummarySection));	
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(tripSummarySection)));
 	}
 	
 	//Locators

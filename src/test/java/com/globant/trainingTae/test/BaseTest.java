@@ -41,4 +41,11 @@ public class BaseTest {
 			{"LAS","LAX",1,0,2,0,13,0,0,"Price","3",1,1,3}
 		};
 	}
+	
+	@DataProvider(name="excercise3")
+	public Object[][] dataProviderExc3(){
+		return new Object[][]{
+			{"Montevideo, Uruguay"}
+		};
+	}
 }

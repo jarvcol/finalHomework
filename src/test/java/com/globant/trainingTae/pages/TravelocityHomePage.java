@@ -41,7 +41,7 @@ public class TravelocityHomePage extends BasePage{
 	private WebElement adultsDropDown;
 	
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[1]/form/div[7]/label/button")
-	private WebElement searchButton;
+	private WebElement onlyFlightsearchButton;
 	
 	@FindBy(css=".datepicker-paging.datepicker-next.btn-paging.btn-secondary.next")
 	private WebElement datePickerNext;
@@ -67,8 +67,21 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(id="package-returning-hp-package")
 	private WebElement packageReturnDateInput;
 	
+	@FindBy(id="tab-hotel-tab-hp")
+	private WebElement onlyHotelButton;
+	
+	@FindBy(id="hotel-destination-hp-hotel")
+	private WebElement hotelDestinationInput;
+	
+	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[2]/form/div[7]/label/button")
+	private WebElement onlyHotelSearchButton;
+	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
+	
+	public void clickOnOnlyHotelButton(){
+		onlyHotelButton.click();
+	}
 	
 	public void clickOnFlightPlusHotelButton(){
 		flightPlusHotelButton.click();
@@ -95,6 +108,10 @@ public class TravelocityHomePage extends BasePage{
 	public void selectFlightArrivalCity(String arrivalAirportCode){
 		arrivalFlightAirportInput.sendKeys(arrivalAirportCode);
 		arrivalFlightAirportInput.sendKeys(Keys.TAB);
+	}
+	
+	public void selectHotelDestinationName(String hotelDestination){
+		hotelDestinationInput.sendKeys(hotelDestination);
 	}
 	
 	public void selectDepartureDate(String year, String month, String day, String type){
@@ -141,14 +158,19 @@ public class TravelocityHomePage extends BasePage{
 		date.click();
 	}
 	
-	public FlightsSearchResultsPage clickOnSearchButton(){
-		searchButton.click();
+	public HotelSearchResultsPage clickOnOnlyHotelSearchButton(){
+		onlyHotelSearchButton.click();
+		return new HotelSearchResultsPage(getDriver());
+	}
+	
+	public FlightsSearchResultsPage clickOnFlightSearchButton(){
+		onlyFlightsearchButton.click();
 		return new FlightsSearchResultsPage(getDriver());
 	}
 	
-	public FlightsPlusHotelSearchResultsPage clickOnFlightPlusHotelSearchButton(){
+	public HotelSearchResultsPage clickOnFlightPlusHotelSearchButton(){
 		flightPlusHotelSearchButton.click();
-		return new FlightsPlusHotelSearchResultsPage(getDriver());
+		return new HotelSearchResultsPage(getDriver());
 	}
 	
 	public void selectPackageDepartureCity(String departureAirportCode){

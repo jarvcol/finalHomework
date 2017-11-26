@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.globant.trainingTae.pages.BookRoomsSelectionPage;
-import com.globant.trainingTae.pages.FlightsPlusHotelSearchResultsPage;
+import com.globant.trainingTae.pages.HotelSearchResultsPage;
 import com.globant.trainingTae.pages.FlightsSearchResultsPage;
 import com.globant.trainingTae.pages.PackageTripDetailPage;
 import com.globant.trainingTae.pages.PaymentPage;
@@ -25,12 +25,13 @@ public class TravelocityTest extends BaseTest {
 	private TripDetailPage tripDetails;
 	private PackageTripDetailPage pkgtripDetails;
 	private PaymentPage payment;
-	private FlightsPlusHotelSearchResultsPage flightHotelSearchResult;
+	private HotelSearchResultsPage hotelSearchResult;
 	private BookRoomsSelectionPage bookRoomsSelectionPage;
 	private SoftAssert softAssertions;
 	
 	
 	//TestMethods
+	//Test1
 	@Test(groups={"excercise1"},dataProvider = "excercise1")
 	public void testExcercise1(String departureCode, String arrivalCode, int adultPassanger, 
 			int plusD, int plusM, int plusY, String sortResults, int positionFlight1, int positionFlight2){
@@ -49,7 +50,7 @@ public class TravelocityTest extends BaseTest {
 		LocalDate departureDate = setTestDate(plusD, plusM, plusY);
 		home.selectDepartureDate(departureDate.getYear()+"", (departureDate.getMonthValue()-1)+"", departureDate.getDayOfMonth()+"","flight");
 		
-		flightSearchResult = home.clickOnSearchButton();
+		flightSearchResult = home.clickOnFlightSearchButton();
 		
 		//2. Verify Results Page
 		flightSearchResult.closeOtherWindows();
@@ -88,6 +89,7 @@ public class TravelocityTest extends BaseTest {
 		softAssertions.assertAll();
 	}
 	
+	//Test2
 	@Test(groups={"excercise2"},dataProvider = "excercise2")
 	public void testExcercise2(String departureCode, String arrivalCode, int adultPassanger, 
 			int plusD, int plusM, int plusY, int tripD, int tripM, int tripY, String sortResults, String stars,
@@ -109,24 +111,24 @@ public class TravelocityTest extends BaseTest {
 		LocalDate returningDate = setTestDatePlusDays(departureDate, tripD, tripM, tripY);
 		home.selectArrivalDate(returningDate.getYear()+"", (returningDate.getMonthValue()-1)+"", returningDate.getDayOfMonth()+"","package");
 		
-		flightHotelSearchResult = home.clickOnFlightPlusHotelSearchButton();
+		hotelSearchResult = home.clickOnFlightPlusHotelSearchButton();
 		
 		//3. Verify results page
-		softAssertions.assertNotNull(flightHotelSearchResult.getPackageResultHeader(), "There is no header section on the package hotel results page");
-		softAssertions.assertNotNull(flightHotelSearchResult.getPackageResults(), "There are no results on the package hotel results page");
-		softAssertions.assertNotNull(flightHotelSearchResult.getGoogleMapContainer(), "There is no google map section on the package hotel results page");
-		softAssertions.assertNotNull(flightHotelSearchResult.getPkgStepIndicator(), "There is no step indicator on the package hotel results page");
-		softAssertions.assertNotNull(flightHotelSearchResult.getSortOptionsCont(), "There is no sort options on the package hotel results page");
+		softAssertions.assertNotNull(hotelSearchResult.getPackageResultHeader(), "There is no header section on the package hotel results page");
+		softAssertions.assertNotNull(hotelSearchResult.getPackageResults(), "There are no results on the package hotel results page");
+		softAssertions.assertNotNull(hotelSearchResult.getGoogleMapContainer(), "There is no google map section on the package hotel results page");
+		softAssertions.assertNotNull(hotelSearchResult.getPkgStepIndicator(), "There is no step indicator on the package hotel results page");
+		softAssertions.assertNotNull(hotelSearchResult.getSortOptionsCont(), "There is no sort options on the package hotel results page");
 		
 		//4. Sort by price. Verify the results were correctly sorted
-		flightHotelSearchResult.sortByOption(sortResults);
-		softAssertions.assertTrue(flightHotelSearchResult.validateSortOfResults(sortResults), "List of results is not sort as expected");
+		hotelSearchResult.sortByOption(sortResults);
+		softAssertions.assertTrue(hotelSearchResult.validateSortOfResults(sortResults), "List of results is not sort as expected");
 		
 		//5. Select the first result with at least 3 stars
-		bookRoomsSelectionPage = flightHotelSearchResult.selectPackageBy("Stars",stars);
+		bookRoomsSelectionPage = hotelSearchResult.selectPackageBy("Stars",stars);
 		
 		//6. In the new page, verify the hotel is the selected in the previous step
-		softAssertions.assertTrue(bookRoomsSelectionPage.verifyCorrectHotelSelected(flightHotelSearchResult.getdataToValidateNextPage()), "Room selection page is not showing the selected hotel");
+		softAssertions.assertTrue(bookRoomsSelectionPage.verifyCorrectHotelSelected(hotelSearchResult.getdataToValidateNextPage()), "Room selection page is not showing the selected hotel");
 		
 		//7. Select the first room option 
 		flightSearchResult = bookRoomsSelectionPage.selectRoomOption(positionHotel);
@@ -151,7 +153,7 @@ public class TravelocityTest extends BaseTest {
 		
 		//12. Verify the trip details are still correct. Continue //13. Verify the “Who’s travelling” page
 		//Asserts
-		softAssertions.assertTrue(payment.getPageTitle().equals("Travelocity: Payment"), "Payment title is not as expected");
+		softAssertions.assertTrue(payment.getPageTitle().equals("Travelocity: Payment"), "Package payment title is not as expected");
 		softAssertions.assertNotNull(payment.getProgressBar(),"Package payment does not have the progress bar");
 		softAssertions.assertNotNull(payment.getTravelerDetailSection(), "Package payment does not have the traveler detail section");
 		softAssertions.assertNotNull(payment.getTripSummarySection(),"Package payment does not have the trip summary detail section");
@@ -160,6 +162,28 @@ public class TravelocityTest extends BaseTest {
 		softAssertions.assertAll();
 	}	
 	
+	//Test3
+	@Test(groups={"excercise3"},dataProvider = "excercise3")
+	public void testExcercise3(String cityHotelName){
+		
+		softAssertions = new SoftAssert();
+		home = getTravelocityHomePage();
+		
+		//1. Go to Hotels page.
+		home.clickOnOnlyHotelButton();
+		
+		//2. Complete “ Going to ” field with the word “Montevideo, Uruguay”. Do the Search
+		home.selectHotelDestinationName(cityHotelName);
+		hotelSearchResult = home.clickOnOnlyHotelSearchButton();
+		
+		//3. Verify that Sponsored results appear first
+		softAssertions.assertTrue(hotelSearchResult.validateSponsoredResultsFirst(), "The hotel search result page is not showing the sponsored results first");
+		
+		//4. Verify that You have the option of receive a discount by entering your email address
+		softAssertions.assertNotNull(hotelSearchResult.getEmailSignUpDiscountOffer(), "The hotel search result page does not have the enter email discount element");
+		
+		softAssertions.assertAll();
+	}
 	
 	
 	//Test aux methods
