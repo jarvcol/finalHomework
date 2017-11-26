@@ -13,8 +13,6 @@ public class TripDetailPage extends BasePage{
 
 	public TripDetailPage(WebDriver pDriver) {
 		super(pDriver);
-		getDriver().switchTo().window((String) getDriver().getWindowHandles().toArray()[1]);
-		getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("bookButton")));
 	}
 	
 	//Locators......!!!!!!!!!!!!!!!!!
@@ -35,6 +33,13 @@ public class TripDetailPage extends BasePage{
 		
 		public boolean validateGuarateePrice(){
 			return getDriver().getPageSource().contains("Price Guarantee");
+		}
+		
+		public void switchWindow(){
+			if(getDriver().getWindowHandles().toArray().length > 1){
+				getDriver().switchTo().window((String) getDriver().getWindowHandles().toArray()[1]);
+			}
+			getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("bookButton")));
 		}
 	
 	

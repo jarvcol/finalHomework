@@ -1,5 +1,6 @@
 package com.globant.trainingTae.pages;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
@@ -26,10 +27,22 @@ public class FlightsPlusHotelSearchResultsPage extends BasePage {
 	
 	@FindBy(id="resultsContainer")
 	private WebElement packageResults;
+	
+	@FindBy(id="hotelResultTitle")
+	private WebElement packageResultHeader;
+	
+	@FindBy(id="googleMapContainer")
+	private WebElement googleMapContainer;
+	
+	@FindBy(id="multiStepIndicatorContainer")
+	private WebElement pkgStepsIndicator;
+	
+	@FindBy(id="sortContainer")
+	private WebElement sortOptionsContainer;
 		
 		
 	//Methods......!!!!!!!!!!!!!!!!!
-		
+
 	public void sortByOption(String sortOption){
 		switch (sortOption) {
 		case "Price":
@@ -55,99 +68,79 @@ public class FlightsPlusHotelSearchResultsPage extends BasePage {
 		WebElement testElement; double starsHotelValue;
 		for (WebElement element: resultsList) {
 			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
-			testElement = element.findElement(By.xpath("//span[@class='icon icon-stars3-5 stars-grey value-title']"));
+			testElement = element.findElement(By.xpath("//*[@class='icon icon-stars3-5 stars-grey value-title']"));
 			starsHotelValue = Double.parseDouble(testElement.getAttribute("title"));
 			if(starsHotelValue >= Double.parseDouble(starsNumber)){
 				testElement.click();
 				return new BookRoomsSelectionPage(getDriver());
 			}	
 		}
+		//If the original list of hotels does not have 3 stars, but there are more options
+		if(getDriver().findElement(By.xpath("button[@class='pagination-next']")) != null){
+			getDriver().findElement(By.xpath("button[@class='pagination-next']")).click();
+			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("article"))));
+			return selectPackageByStars(getDriver().findElements(By.tagName("article")),starsNumber);
+		}
 		//Default in case hotel match, selects first element
 		resultsList.get(0).click();
 		return new BookRoomsSelectionPage(getDriver()); 
 	}
-}
 	
-	/*
-	 
-	//Locators for cards information
-	//Locators for linkCards
-	//article
-	//.flex-link[data-track]
-	//.flex-card > .flex-link-wrap
-	//.flex-content.info-and-price.CITY
-	//#resultsContainer
-	  
-	Option 1
-	public void selectPackageBy(String byOption, String value){
-		List<WebElement> resultsList = getDriver().findElements(By.tagName("article"));
-		switch (byOption) {
-		case "Stars":
-			selectPackageByStars(resultsList, Integer.parseInt(value));
-			break;
-		default:
-			break;
-		}
-	}
 	
-	public void selectPackageByStars(List<WebElement> resultsList, int starsNumber){
-		WebElement testElement; int i=1;
-		for (WebElement element: resultsList) {
-			try{
-				getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOf(element)));
-				System.out.println(i);
-				System.out.println(element.getAttribute("id"));
-				System.out.println(element.getAttribute("class"));
-				i++;
-			}catch(StaleElementReferenceException exc){
-				i++;
+	//Test and assertion methods
+		public boolean validateSortOfResults(String sortType){
+			switch (sortType) {
+			case "Price":
+				List<WebElement> resultsList = getDriver().findElements(By.cssSelector(".actualPrice.price.fakeLink"));
+				return validateSortByPrice(resultsList,0);
+			default:
+				return false;
 			}
-			//testElement = element.findElement(By.xpath("./div[2]/div/div[1]/div[2]/ul[1]/li[7]/strong/span[2]"));
-			/*
-			testElement = element.findElement(By.xpath("./div[2]/div/div[1]/div[2]/ul[1]/li[7]/strong/span[2]"));
-			if(Double.parseDouble(testElement.getAttribute("title").toString()) >= starsNumber){
-				testElement.click();
+		}
+		
+		private boolean validateSortByPrice(List<WebElement> resultsList, double prevValue){
+			double currValue=0;
+			for (WebElement element: resultsList) {
+				if(!(prevValue == 0)){
+					currValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
+					if(prevValue>currValue){
+						return false;
+					}
+					prevValue = currValue;
+				}else{
+					prevValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
+				}
 			}
-			
-		    
+			return true;
 		}
-	
-	Option 2
-	public BookRoomsSelectionPage selectPackageBy(String byOption, String value){
-		List<WebElement> resultsList = getDriver().findElements(By.tagName("article"));
-		switch (byOption) {
-		case "Stars":
-			return selectPackageByStars(resultsList, Integer.parseInt(value));
-		default:
-			return null;
-		}
+		
+	public String getdataToValidateNextPage(){
+		String hotelName, stars, price;
+		hotelName = getDriver().findElement(By.cssSelector(".flex-card.visited-hotel .hotelName.fakeLink")).getText();
+		stars = getDriver().findElement(By.cssSelector(".flex-card.visited-hotel .icon.stars-grey")).getAttribute("title");
+		price = getDriver().findElement(By.cssSelector(".flex-card.visited-hotel .actualPrice.price.fakeLink ")).getText().replaceAll("\\D", "");
+		return hotelName+"|"+stars+"|"+price;
 	}
 	
-	public BookRoomsSelectionPage selectPackageByStars(List<WebElement> resultsList, int starsNumber){
-		WebElement testElement = resultsList.get(0);
-		System.out.println(testElement.getAttribute("id"));
-		System.out.println(testElement.getAttribute("class"));
-		testElement.click();
-		return new BookRoomsSelectionPage(getDriver());
-	}
+	//Getters
 	
-	Option 3
-	public void sortByOption(String sortOption){
-		switch (sortOption) {
-		case "Price":
-			priceSortButton.click();
-			break;
-		default:
-			break;
-		}
-		getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("article")));
-	}
-	
-	public BookRoomsSelectionPage selectPackageBy(String byOption, String value){
-		List<WebElement> resultsList = getDriver().findElements(By.tagName("article"));
-		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.elementToBeClickable(resultsList.get(0))));
-		resultsList.get(0).click();
-		return new BookRoomsSelectionPage(getDriver());
+	public WebElement getPackageResultHeader() {
+		return packageResultHeader;
 	}
 
-*/
+	public WebElement getPackageResults() {
+		return packageResults;
+	}
+
+	public WebElement getGoogleMapContainer() {
+		return googleMapContainer;
+	}
+	
+	public WebElement getPkgStepIndicator() {
+		return pkgStepsIndicator;
+	}
+	
+	public WebElement getSortOptionsCont() {
+		return sortOptionsContainer;
+	}
+}

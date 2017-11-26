@@ -10,7 +10,8 @@ public class PaymentPage extends BasePage{
 
 	public PaymentPage(WebDriver pDriver) {
 		super(pDriver);
-		getWait().until(ExpectedConditions.elementToBeClickable(By.id("complete-booking")));	}
+		getWait().until(ExpectedConditions.visibilityOf(tripSummarySection));	
+	}
 	
 	//Locators
 	@FindBy(tagName="h1")
@@ -22,6 +23,19 @@ public class PaymentPage extends BasePage{
 	@FindBy(id="complete-booking")
 	private WebElement completeBookingButton;
 	
+	@FindBy(css="#page-header .progress-bar")
+	private WebElement progressBar;
+	
+	@FindBy(id="trip-summary")
+	private WebElement tripSummarySection;
+	
+	@FindBy(css=".allTravelerDetails")
+	private WebElement travelerDetailSection;
+	
+	@FindBy(css="fieldset.hotel")
+	private WebElement hotelDetailSection;
+	
+	
 	//Methods
 	
 	
@@ -32,7 +46,7 @@ public class PaymentPage extends BasePage{
 	}
 	
 	public WebElement getTravelerDetailSection(){
-		return getDriver().findElement(By.cssSelector(".allTravelerDetails"));
+		return travelerDetailSection;
 	}
 
 	public WebElement getHeaderLev1() {
@@ -47,7 +61,16 @@ public class PaymentPage extends BasePage{
 		return completeBookingButton;
 	}
 	
+	public WebElement getProgressBar() {
+		return progressBar;
+	}
 	
+	public WebElement getTripSummarySection() {
+		return tripSummarySection;
+	}
 	
+	public WebElement getHotelDetailSection() {
+		return hotelDetailSection;
+	}
 
 }

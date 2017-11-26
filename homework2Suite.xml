@@ -5,8 +5,8 @@
     <test verbose="2" name="FinalHomeWork">
         <groups>
             <run>
-                <exclude name="excercise2" />
-                <include name="excercise1"/>
+                <exclude name="excercise1" />
+                <include name="excercise2"/>
             </run>
         </groups>
         <classes>

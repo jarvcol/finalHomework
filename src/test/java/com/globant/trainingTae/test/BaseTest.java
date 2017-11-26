@@ -38,7 +38,7 @@ public class BaseTest {
 	@DataProvider(name="excercise2")
 	public Object[][] dataProviderExc2(){
 		return new Object[][]{
-			{"LAS","LAX",1,0,2,0,13,0,0,"Price","3",1,3}
+			{"LAS","LAX",1,0,2,0,13,0,0,"Price","3",1,1,3}
 		};
 	}
 }
