@@ -115,7 +115,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	
 	
 	public boolean testAllElementsHaveSelectButton(){
-		if(getDriver().findElements(By.cssSelector("#flightModuleList > .flight-module.segment.offer-listing")).size() == 
+		if(getDriver().findElements(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")).size() == 
 				getDriver().findElements(By.xpath("//button[@data-test-id='select-button']")).size()){
 			return true;
 		}else{
@@ -124,7 +124,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveFlightDuration(){
-		if(getDriver().findElements(By.cssSelector("#flightModuleList > .flight-module.segment.offer-listing")).size() == 
+		if(getDriver().findElements(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")).size() == 
 				getDriver().findElements(By.xpath("//*[@data-test-id='duration']")).size()){
 			return true;
 		}else{
@@ -133,7 +133,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveFlightDetails(){
-		if(getDriver().findElements(By.cssSelector("#flightModuleList > .flight-module.segment.offer-listing")).size() == 
+		if(getDriver().findElements(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")).size() == 
 				getDriver().findElements(By.cssSelector(".flight-details-link.toggle-trigger")).size()){
 			return true;
 		}else{
