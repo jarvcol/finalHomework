@@ -1,5 +1,7 @@
 package com.globant.trainingTae.pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,14 +13,15 @@ public class TripDetailPage extends BasePage{
 
 	public TripDetailPage(WebDriver pDriver) {
 		super(pDriver);
-		getDriver().switchTo().window((String) getDriver().getWindowHandles().toArray()[1]);
-		getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("bookButton")));
 	}
 	
 	//Locators......!!!!!!!!!!!!!!!!!
 	
 		@FindBy(id="bookButton")
-		private WebElement continueBookingButton;		
+		private WebElement continueBookingButton;
+		
+		@FindBy(css=".packagePriceTotal")
+		private WebElement packagePriceTotal;					
 		
 		
 	//Methods......!!!!!!!!!!!!!!!!!
@@ -27,7 +30,27 @@ public class TripDetailPage extends BasePage{
 			continueBookingButton.click();
 			return new PaymentPage(getDriver());
 		}
+		
+		public boolean validateGuarateePrice(){
+			return getDriver().getPageSource().contains("Price Guarantee");
+		}
+		
+		public void switchWindow(){
+			if(getDriver().getWindowHandles().toArray().length > 1){
+				getDriver().switchTo().window((String) getDriver().getWindowHandles().toArray()[1]);
+			}
+			getWait().until(ExpectedConditions.visibilityOfElementLocated(By.id("bookButton")));
+		}
 	
+	
+	//Getters
+		public WebElement getPackagePriceTotal() {
+			return packagePriceTotal;
+		}
+
+		public List<WebElement> getTripDetailSection() {
+			return getDriver().findElements(By.cssSelector(".flex-card.flex-tile.details"));
+		}
 	
 
 }
