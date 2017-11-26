@@ -29,6 +29,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	//Methods......!!!!!!!!!!!!!!!!!
 	
 	public void sortResultList(String sortOption){
+		getWait().until(ExpectedConditions.elementToBeClickable(sortButton));
 		Select sortOptionSelect = new Select(sortButton);
 		sortOptionSelect.selectByValue(sortOption);
 		getWait().until(ExpectedConditions.elementToBeClickable(sortButton));
@@ -50,7 +51,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	private void selectFlightByNumberOnList(int position){
-		getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#flightModuleList li")));
+		getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")));
 		WebElement flightSearchButton = getDriver().findElement(By.xpath("//*[@id='flightModuleList']/li["+position+"]//button[@data-test-id='select-button']"));
 		flightSearchButton.click();
 	}
