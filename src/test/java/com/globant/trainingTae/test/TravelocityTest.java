@@ -50,7 +50,7 @@ public class TravelocityTest extends BaseTest {
 		LocalDate departureDate = setTestDate(plusD, plusM, plusY);
 		home.selectDepartureDate(departureDate.getYear()+"", (departureDate.getMonthValue()-1)+"", departureDate.getDayOfMonth()+"","flight");
 		
-		flightSearchResult = home.clickOnSearchButton();
+		flightSearchResult = home.clickOnFlightSearchButton();
 		
 		//2. Verify Results Page
 		flightSearchResult.closeOtherWindows();
@@ -163,6 +163,27 @@ public class TravelocityTest extends BaseTest {
 	}	
 	
 	//Test3
+	@Test(groups={"excercise3"},dataProvider = "excercise3")
+	public void testExcercise3(String cityHotelName){
+		
+		softAssertions = new SoftAssert();
+		home = getTravelocityHomePage();
+		
+		//1. Go to Hotels page.
+		home.clickOnOnlyHotelButton();
+		
+		//2. Complete “ Going to ” field with the word “Montevideo, Uruguay”. Do the Search
+		home.selectHotelDestinationName(cityHotelName);
+		hotelSearchResult = home.clickOnOnlyHotelSearchButton();
+		
+		//3. Verify that Sponsored results appear first
+		softAssertions.assertTrue(hotelSearchResult.validateSponsoredResultsFirst(), "The hotel search result page is not showing the sponsored results first");
+		
+		//4. Verify that You have the option of receive a discount by entering your email address
+		softAssertions.assertNotNull(hotelSearchResult.getEmailSignUpDiscountOffer(), "The hotel search result page does not have the enter email discount element");
+		
+		softAssertions.assertAll();
+	}
 	
 	
 	//Test aux methods

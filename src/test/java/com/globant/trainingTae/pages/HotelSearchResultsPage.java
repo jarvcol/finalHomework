@@ -39,6 +39,12 @@ public class HotelSearchResultsPage extends BasePage {
 	
 	@FindBy(id="sortContainer")
 	private WebElement sortOptionsContainer;
+	
+	@FindBy(tagName="article")
+	private List<WebElement> hotelsResultsCardList;
+	
+	@FindBy(id="mer-signup-toggle-btn")
+	private WebElement emailSignUpDiscountOffer;
 		
 		
 	//Methods......!!!!!!!!!!!!!!!!!
@@ -122,6 +128,14 @@ public class HotelSearchResultsPage extends BasePage {
 		return hotelName+"|"+stars+"|"+price;
 	}
 	
+	public boolean validateSponsoredResultsFirst(){
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(hotelsResultsCardList)));
+		if(hotelsResultsCardList.get(0).getAttribute("id").toLowerCase().contains("sponsored"))
+			return true;
+		else
+			return false;
+	}
+	
 	//Getters
 	
 	public WebElement getPackageResultHeader() {
@@ -142,5 +156,9 @@ public class HotelSearchResultsPage extends BasePage {
 	
 	public WebElement getSortOptionsCont() {
 		return sortOptionsContainer;
+	}
+	
+	public WebElement getEmailSignUpDiscountOffer() {
+		return emailSignUpDiscountOffer;
 	}
 }

@@ -41,7 +41,7 @@ public class TravelocityHomePage extends BasePage{
 	private WebElement adultsDropDown;
 	
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[1]/form/div[7]/label/button")
-	private WebElement searchButton;
+	private WebElement onlyFlightsearchButton;
 	
 	@FindBy(css=".datepicker-paging.datepicker-next.btn-paging.btn-secondary.next")
 	private WebElement datePickerNext;
@@ -72,6 +72,9 @@ public class TravelocityHomePage extends BasePage{
 	
 	@FindBy(id="hotel-destination-hp-hotel")
 	private WebElement hotelDestinationInput;
+	
+	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[2]/form/div[7]/label/button")
+	private WebElement onlyHotelSearchButton;
 	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
@@ -107,7 +110,7 @@ public class TravelocityHomePage extends BasePage{
 		arrivalFlightAirportInput.sendKeys(Keys.TAB);
 	}
 	
-	public void inputHotelDestinationName(String hotelDestination){
+	public void selectHotelDestinationName(String hotelDestination){
 		hotelDestinationInput.sendKeys(hotelDestination);
 	}
 	
@@ -156,12 +159,12 @@ public class TravelocityHomePage extends BasePage{
 	}
 	
 	public HotelSearchResultsPage clickOnOnlyHotelSearchButton(){
-		searchButton.click();
+		onlyHotelSearchButton.click();
 		return new HotelSearchResultsPage(getDriver());
 	}
 	
-	public FlightsSearchResultsPage clickOnSearchButton(){
-		searchButton.click();
+	public FlightsSearchResultsPage clickOnFlightSearchButton(){
+		onlyFlightsearchButton.click();
 		return new FlightsSearchResultsPage(getDriver());
 	}
 	
