@@ -1,5 +1,7 @@
 package com.globant.trainingTae.pages;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoSuchElementException;
@@ -32,16 +34,16 @@ public class TravelocityHomePage extends BasePage{
 	private WebElement roundTripButton;
 	
 	@FindBy(id="flight-departing-hp-flight")
-	private WebElement departureFlightDate;
+	private WebElement departureFlightDateInput;
 	
 	@FindBy(id="flight-returning-hp-flight")
-	private WebElement returningFlightDate;
+	private WebElement returningFlightDateInput;
 	
 	@FindBy(id="flight-adults-hp-flight")
 	private WebElement adultsDropDown;
 	
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[1]/form/div[7]/label/button")
-	private WebElement onlyFlightsearchButton;
+	private WebElement onlyFlightSearchButton;
 	
 	@FindBy(css=".datepicker-paging.datepicker-next.btn-paging.btn-secondary.next")
 	private WebElement datePickerNext;
@@ -76,8 +78,25 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[2]/form/div[7]/label/button")
 	private WebElement onlyHotelSearchButton;
 	
+	@FindBy(id="partialHotelBooking-hp-package")
+	private WebElement hotelForPartOfMyStayCheckBox;
+	
+	@FindBy(id="package-checkin-hp-package")
+	private WebElement pkgCheckInDateInput;
+	
+	@FindBy(id="package-checkout-hp-package")
+	private WebElement pkgCheckOutDateInput;
+	
+	@FindBy(css="div.alert.alert-error.validation-alert .error-link")
+	private List<WebElement> errorMessagesList;
+	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
+	
+	public void checkHotelForPartOfMyStay(){
+		hotelForPartOfMyStayCheckBox.sendKeys(Keys.SPACE);
+		
+	}
 	
 	public void clickOnOnlyHotelButton(){
 		onlyHotelButton.click();
@@ -116,13 +135,12 @@ public class TravelocityHomePage extends BasePage{
 	
 	public void selectDepartureDate(String year, String month, String day, String type){
 		boolean found = false;
-		if(type.equals("flight")){
-			departureFlightDate.click();
-		}else{
-			if(type.equals("package")){
-				packageDepartureDateInput.click();
-			}
-		}
+		if(type.equals("flight"))
+			departureFlightDateInput.click();
+		if(type.equals("package"))
+			packageDepartureDateInput.click();
+		if(type.equals("packageHotel"))
+			pkgCheckInDateInput.click();
 		WebElement date=null;
 		do{
 			try{
@@ -138,13 +156,12 @@ public class TravelocityHomePage extends BasePage{
 
 	public void selectArrivalDate(String year, String month, String day, String type){
 		boolean found = false;
-		if(type.equals("flight")){
-			returningFlightDate.click();
-		}else{
-			if(type.equals("package")){
-				packageReturnDateInput.click();
-			}
-		}
+		if(type.equals("flight"))
+			returningFlightDateInput.click();
+		if(type.equals("package"))
+			packageReturnDateInput.click();
+		if(type.equals("packageHotel"))
+			pkgCheckOutDateInput.click();
 		WebElement date=null;
 		do{
 			try{
@@ -164,7 +181,7 @@ public class TravelocityHomePage extends BasePage{
 	}
 	
 	public FlightsSearchResultsPage clickOnFlightSearchButton(){
-		onlyFlightsearchButton.click();
+		onlyFlightSearchButton.click();
 		return new FlightsSearchResultsPage(getDriver());
 	}
 	
@@ -183,5 +200,25 @@ public class TravelocityHomePage extends BasePage{
 		flightPlusHotelReturnInput.sendKeys(Keys.TAB);
 	}
 	
+	public void clickSearchForErros(String formType){
+		if(formType.equals("flight"))
+			onlyFlightSearchButton.click();
+		if(formType.equals("package"))
+			flightPlusHotelSearchButton.click();
+		if(formType.equals("packageHotel"))
+			onlyHotelSearchButton.click();
+	}
+	
+	
+	//Test and assert methods
+	
+	public boolean checkPresenceOfErrorMessage(String expectedMsg){
+		getWait().until(ExpectedConditions.visibilityOfAllElements(errorMessagesList));
+		for(WebElement element : errorMessagesList){
+			if(element.getText().equals(expectedMsg))
+				return true;
+		}
+		return false;
+	}
 		
 }

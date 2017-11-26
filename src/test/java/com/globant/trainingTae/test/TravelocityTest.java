@@ -99,10 +99,10 @@ public class TravelocityTest extends BaseTest {
 		home = getTravelocityHomePage();
 		
 		//1. Go to Flight + Hotel
-		//home.clickOnFlightPlusHotelButton();
+		home.clickOnFlightPlusHotelButton();
 		
 		//2. Search for a flight from LAS to LAX
-		home.selectAdultPassangers(adultPassanger);
+		home.selectAdultPassangers(adultPassanger); ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		home.selectPackageDepartureCity(departureCode);
 		home.selectPackageArrivalCity(arrivalCode);
 		//Dates		
@@ -185,6 +185,42 @@ public class TravelocityTest extends BaseTest {
 		softAssertions.assertAll();
 	}
 	
+	//Test4
+	@Test(groups={"excercise4"},dataProvider = "excercise4")
+	public void testExcercise4(String departureCode, String arrivalCode, int plusD, int plusM, int plusY, String expectedErrMsg, String formType){
+		
+		softAssertions = new SoftAssert();
+		home = getTravelocityHomePage();
+		
+		//1. Go to Flight + Hotel
+		home.clickOnFlightPlusHotelButton();
+		
+		//2. Complete all the fields
+		home.selectPackageDepartureCity(departureCode);
+		home.selectPackageArrivalCity(arrivalCode);
+		//Dates		
+		LocalDate departureDate = setTestDate(0, 0, 0);
+		home.selectDepartureDate(departureDate.getYear()+"", (departureDate.getMonthValue()-1)+"", departureDate.getDayOfMonth()+"","package");
+		LocalDate returningDate = setTestDatePlusDays(departureDate, plusD, plusM, plusY);
+		home.selectArrivalDate(returningDate.getYear()+"", (returningDate.getMonthValue()-1)+"", returningDate.getDayOfMonth()+"","package");
+		
+		//3. Select the checkbox “I only need a hotel for part of my stay”
+		home.checkHotelForPartOfMyStay();
+		
+		//4. Complete the new dates fields with dates that are not included in the period. Do the search
+		LocalDate checkInDate = setTestDatePlusDays(returningDate,plusD, plusM, plusY);
+		home.selectDepartureDate(checkInDate.getYear()+"", (checkInDate.getMonthValue()-1)+"", checkInDate.getDayOfMonth()+"","packageHotel");
+		LocalDate checkOutDate = setTestDatePlusDays(checkInDate,plusD, plusM, plusY);
+		home.selectArrivalDate(checkOutDate.getYear()+"", (checkOutDate.getMonthValue()-1)+"", checkOutDate.getDayOfMonth()+"","packageHotel");
+		
+		home.clickSearchForErros(formType);
+		
+		//5. Verify the error message is displayed
+		softAssertions.assertTrue(home.checkPresenceOfErrorMessage(expectedErrMsg), "Home screen error message is not as expected");
+		
+		softAssertions.assertAll();
+		
+	}
 	
 	//Test aux methods
 	private LocalDate setTestDatePlusDays(LocalDate currentDate, int plusDays, int plusMonths, int plusYears){

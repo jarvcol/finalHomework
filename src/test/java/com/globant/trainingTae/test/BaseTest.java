@@ -48,4 +48,11 @@ public class BaseTest {
 			{"Montevideo, Uruguay"}
 		};
 	}
+	
+	@DataProvider(name="excercise4")
+	public Object[][] dataProviderExc4(){
+		return new Object[][]{
+			{"LAS","LAX",13,0,0,"Your partial check-in and check-out dates must fall within your arrival and departure dates. Please review your dates.","package"}
+		};
+	}
 }
