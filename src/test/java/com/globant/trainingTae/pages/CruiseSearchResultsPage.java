@@ -65,4 +65,14 @@ public class CruiseSearchResultsPage extends BasePage {
 	
 	//Test and assertion methods
 
+	public boolean validateResultsWithOffers(){
+		List<WebElement> discountOffers = getDriver().findElements(By.xpath("//div[@class='message-flag flex-flag']"));
+		List<WebElement> cruiserOptions = getDriver().findElements(By.xpath("//div[@class='message-flag flex-flag']"));
+		if(discountOffers.size() > 0 && cruiserOptions.size() > discountOffers.size())
+			return true;
+		else
+			return false;
+		
+	}
+	
 }

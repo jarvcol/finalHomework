@@ -245,17 +245,21 @@ public class TravelocityTest extends BaseTest {
 		cruiseSearchResults = home.clickOnCruiseSearchButton();
 		
 		//4. Verify the Filter information
+		//???
 		
 		//5. In the “Cruise Length” filter, select “10-14 nights”
 		cruiseSearchResults.filterByCruiseLength(nights);
 		
 		//6. Verify that result page shows cruises with and without discounts 
+		softAssertions.assertTrue(cruiseSearchResults.validateResultsWithOffers(), "Cruise search results page does not include options with "+
+		"and without discount offers");
 		
 		//7. Select the cruise option with more discount, pressing the show dates button first
 		cruiseInformationPage = cruiseSearchResults.selectFirstOptionWithHigherDiscount();
 		
 		//8. Validate that cruise information is displayed for the selected one 
 		
+		softAssertions.assertAll();
 	}
 	
 	
