@@ -55,4 +55,11 @@ public class BaseTest {
 			{"LAS","LAX",13,0,0,"Your partial check-in and check-out dates must fall within your arrival and departure dates. Please review your dates.","package"}
 		};
 	}
+	
+	@DataProvider(name="excercise5")
+	public Object[][] dataProviderExc5(){
+		return new Object[][]{
+			{"europe",4,"10-14"}
+		};
+	}
 }

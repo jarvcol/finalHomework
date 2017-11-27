@@ -70,7 +70,7 @@ public class TravelocityHomePage extends BasePage{
 	private WebElement packageReturnDateInput;
 	
 	@FindBy(id="tab-hotel-tab-hp")
-	private WebElement onlyHotelButton;
+	private WebElement hotelButton;
 	
 	@FindBy(id="hotel-destination-hp-hotel")
 	private WebElement hotelDestinationInput;
@@ -90,16 +90,31 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(css="div.alert.alert-error.validation-alert .error-link")
 	private List<WebElement> errorMessagesList;
 	
+	@FindBy(id="tab-cruise-tab-hp")
+	private WebElement cruiseButton;
+	
+	@FindBy(id="cruise-destination-hp-cruise")
+	private WebElement goingToDropDown;
+	
+	@FindBy(id="cruise-departure-month-hp-cruise")
+	private WebElement departureMonthDropDown;
+	
+	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[5]/form/button")
+	private WebElement onlyCruiseSearchButton;
+	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
 	
-	public void checkHotelForPartOfMyStay(){
-		hotelForPartOfMyStayCheckBox.sendKeys(Keys.SPACE);
-		
+	public void clickOnCruiseButton(){
+		cruiseButton.click();
 	}
 	
-	public void clickOnOnlyHotelButton(){
-		onlyHotelButton.click();
+	public void checkHotelForPartOfMyStay(){
+		hotelForPartOfMyStayCheckBox.sendKeys(Keys.SPACE);
+	}
+	
+	public void clickOnHotelButton(){
+		hotelButton.click();
 	}
 	
 	public void clickOnFlightPlusHotelButton(){
@@ -112,6 +127,18 @@ public class TravelocityHomePage extends BasePage{
 	
 	public void clickOnRoundTrip(){
 		roundTripButton.click();
+	}
+	
+	public void selectDepartureMonth(String departureMonth){
+		getWait().until(ExpectedConditions.elementToBeClickable(departureMonthDropDown));
+		Select departureMonthDropDownSelect = new Select(departureMonthDropDown);
+		departureMonthDropDownSelect.selectByValue(departureMonth);
+	}
+	
+	public void selectGoingToCruise(String destination){
+		getWait().until(ExpectedConditions.elementToBeClickable(goingToDropDown));
+		Select goingToDropDownSelect = new Select(goingToDropDown);
+		goingToDropDownSelect.selectByValue(destination);
 	}
 	
 	public void selectAdultPassangers(int adultPassangers){
@@ -188,6 +215,11 @@ public class TravelocityHomePage extends BasePage{
 	public HotelSearchResultsPage clickOnFlightPlusHotelSearchButton(){
 		flightPlusHotelSearchButton.click();
 		return new HotelSearchResultsPage(getDriver());
+	}
+	
+	public CruiseSearchResultsPage clickOnCruiseSearchButton(){
+		onlyCruiseSearchButton.click();
+		return new CruiseSearchResultsPage(getDriver());
 	}
 	
 	public void selectPackageDepartureCity(String departureAirportCode){
