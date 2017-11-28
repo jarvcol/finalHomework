@@ -8,6 +8,7 @@
                 <exclude name="excercise2" />
                 <exclude name="excercise3" />
                 <exclude name="excercise4"/>
+                <exclude name="excercise5"/>
                 <include name="excercise1"/>
             </run>
         </groups>

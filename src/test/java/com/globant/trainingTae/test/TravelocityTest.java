@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.globant.trainingTae.pages.BookRoomsSelectionPage;
+import com.globant.trainingTae.pages.CruiseInformationPage;
+import com.globant.trainingTae.pages.CruiseSearchResultsPage;
 import com.globant.trainingTae.pages.HotelSearchResultsPage;
 import com.globant.trainingTae.pages.FlightsSearchResultsPage;
 import com.globant.trainingTae.pages.PackageTripDetailPage;
@@ -24,6 +26,8 @@ public class TravelocityTest extends BaseTest {
 	private FlightsSearchResultsPage flightSearchResult;
 	private TripDetailPage tripDetails;
 	private PackageTripDetailPage pkgtripDetails;
+	private CruiseSearchResultsPage cruiseSearchResults;
+	private CruiseInformationPage cruiseInformationPage;
 	private PaymentPage payment;
 	private HotelSearchResultsPage hotelSearchResult;
 	private BookRoomsSelectionPage bookRoomsSelectionPage;
@@ -170,7 +174,7 @@ public class TravelocityTest extends BaseTest {
 		home = getTravelocityHomePage();
 		
 		//1. Go to Hotels page.
-		home.clickOnOnlyHotelButton();
+		home.clickOnHotelButton();
 		
 		//2. Complete “ Going to ” field with the word “Montevideo, Uruguay”. Do the Search
 		home.selectHotelDestinationName(cityHotelName);
@@ -221,6 +225,46 @@ public class TravelocityTest extends BaseTest {
 		softAssertions.assertAll();
 		
 	}
+	
+	//Test5
+	@Test(groups={"excercise5"},dataProvider = "excercise5")
+	public void testExcercise5(String goingTo, int plusMonth, String nights){
+		
+		softAssertions = new SoftAssert();
+		home = getTravelocityHomePage();
+		
+		//1. Go to Cruises page.
+		home.clickOnCruiseButton();
+		
+		//2. In the Going to drop down select “Europe”
+		home.selectGoingToCruise(goingTo);
+		
+		//3. In the “Departure month” dropdown select a month. Do the Search
+		LocalDate departureMonth = setTestDate(0, plusMonth, 0);
+		home.selectDepartureMonth(departureMonth.getYear()+"-"+((departureMonth.getMonthValue()<10) ? "0"+departureMonth.getMonthValue() : departureMonth.getMonthValue())+"-01");
+		cruiseSearchResults = home.clickOnCruiseSearchButton();
+		
+		//4. Verify the Filter information
+		softAssertions.assertEquals(cruiseSearchResults.getGoingToFilterValue().trim().toLowerCase(), goingTo, "Cruise search results page is not showing the going to filter expected value");
+		softAssertions.assertEquals(cruiseSearchResults.getDepartureMonthFilterValue().toLowerCase(), departureMonth.getMonth().toString().substring(0, 3).toLowerCase()+" "+departureMonth.getYear(), "Cruise search results page is not showing the departure month filter expected value");
+		
+		//5. In the “Cruise Length” filter, select “10-14 nights”
+		cruiseSearchResults.filterByCruiseLength(nights);
+		
+		//6. Verify that result page shows cruises with and without discounts 
+		softAssertions.assertTrue(cruiseSearchResults.validateResultsWithOffers(), "Cruise search results page does not include options with "+
+		"and without discount offers");
+		
+		//7. Select the cruise option with more discount, pressing the show dates button first
+		cruiseInformationPage = cruiseSearchResults.selectFirstOptionWithHigherDiscount();
+		
+		//8. Validate that cruise information is displayed for the selected one 
+		softAssertions.assertTrue(cruiseInformationPage.validateCruiseExpectedInformation(cruiseSearchResults.getTextAssertForSelect()), 
+				"Cruise information page does not shows the information of the expected cruise");
+		
+		softAssertions.assertAll();
+	}
+	
 	
 	//Test aux methods
 	private LocalDate setTestDatePlusDays(LocalDate currentDate, int plusDays, int plusMonths, int plusYears){
