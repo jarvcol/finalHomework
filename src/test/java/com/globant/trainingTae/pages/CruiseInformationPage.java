@@ -18,11 +18,27 @@ public class CruiseInformationPage extends BasePage {
 	@FindBy(xpath="//div[@id='cabin-tabs']/ul/li")
 	private List<WebElement> cabinTypeSelectionList;
 	
+	@FindBy(css="h1.main-title [aria-hidden]")
+	private WebElement mainHeaderOptionName;
+	
+	@FindBy(css="aside .secondary.ship-info>div")
+	private WebElement shipNameInfo;
+	
+	@FindBy(css="aside .secondary.details-section .details-content")
+	private List<WebElement> shipSailingDates;
 	
 	//Methods
 	
 	
-	
 	//Test and assertion methods
+	
+	public boolean validateCruiseExpectedInformation(String  expectedInfo){
+		if(expectedInfo.equals(mainHeaderOptionName.getText()+"|"+shipNameInfo.getText().replaceAll("Ship: ", "")))
+			return true;
+		else
+			return false;
+	}
 
 } 
+
+

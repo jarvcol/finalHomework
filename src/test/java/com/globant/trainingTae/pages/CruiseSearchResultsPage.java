@@ -20,9 +20,19 @@ public class CruiseSearchResultsPage extends BasePage {
 	@FindBy(xpath="//div[@id='main-results']/div[2]/div")
 	private List<WebElement> cruiseResultsList;
 	
+	@FindBy(id="destination-toggle")
+	private WebElement filterByGoingToLink;
+	
+	@FindBy(id="month-toggle")
+	private WebElement filterByDepartureMonthLink;
+	
+	@FindBy(id="passenger-toggle")
+	private WebElement filterByTravelersLink;
+	
+	private String textAssertForSelect;
 	
 	//Methods
-	
+
 	public void filterByCruiseLength(String filterBy){
 		getDriver().findElement(By.id("length-"+filterBy)).click();
 		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(cruiseResultsList)));
@@ -55,6 +65,7 @@ public class CruiseSearchResultsPage extends BasePage {
 				}
 			}
 		}
+		setSelectionAssertInformation(selectedValue);
 		
 		getDriver().findElement(By.xpath("//div[@id='main-results']/div[2]/div["+selectedValue+"]//button[@class='btn-secondary btn-sub-action show-dates-button']")).click();
 		getDriver().findElement(By.xpath("//div[@id='main-results']/div[2]/div["+selectedValue+"]//a[@class='btn btn-secondary btn-action select-sailing-button']")).click();
@@ -67,12 +78,35 @@ public class CruiseSearchResultsPage extends BasePage {
 
 	public boolean validateResultsWithOffers(){
 		List<WebElement> discountOffers = getDriver().findElements(By.xpath("//div[@class='message-flag flex-flag']"));
-		List<WebElement> cruiserOptions = getDriver().findElements(By.xpath("//div[@class='message-flag flex-flag']"));
-		if(discountOffers.size() > 0 && cruiserOptions.size() > discountOffers.size())
+		if(cruiseResultsList.size() > 0 && discountOffers.size() > 0 && cruiseResultsList.size() != discountOffers.size())
 			return true;
 		else
 			return false;
 		
+	}
+	
+	public String getGoingToFilterValue(){
+		return filterByGoingToLink.getText();
+	}
+	
+	public String getDepartureMonthFilterValue(){
+		return filterByDepartureMonthLink.getText();
+	}
+	
+	public String getTravelersFilterValue(){
+		return filterByTravelersLink.getText();
+	}
+	
+	private void setSelectionAssertInformation(int selectedValue){
+		textAssertForSelect = getDriver().findElement(
+				By.xpath("//div[@id='main-results']/div[2]/div["+selectedValue+"]//div[@class='card-header']")).getText()+"|";
+		
+		textAssertForSelect = textAssertForSelect + getDriver().findElement(
+				By.xpath("//div[@id='main-results']/div[2]/div["+selectedValue+"]//div[@class='secondary ship-infosite']")).getText();
+	}
+	
+	public String getTextAssertForSelect() {
+		return textAssertForSelect;
 	}
 	
 }

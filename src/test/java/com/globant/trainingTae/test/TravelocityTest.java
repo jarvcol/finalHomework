@@ -245,7 +245,8 @@ public class TravelocityTest extends BaseTest {
 		cruiseSearchResults = home.clickOnCruiseSearchButton();
 		
 		//4. Verify the Filter information
-		//???
+		softAssertions.assertEquals(cruiseSearchResults.getGoingToFilterValue().trim().toLowerCase(), goingTo, "Cruise search results page is not showing the going to filter expected value");
+		softAssertions.assertEquals(cruiseSearchResults.getDepartureMonthFilterValue().toLowerCase(), departureMonth.getMonth().toString().substring(0, 3).toLowerCase()+" "+departureMonth.getYear(), "Cruise search results page is not showing the departure month filter expected value");
 		
 		//5. In the “Cruise Length” filter, select “10-14 nights”
 		cruiseSearchResults.filterByCruiseLength(nights);
@@ -258,6 +259,8 @@ public class TravelocityTest extends BaseTest {
 		cruiseInformationPage = cruiseSearchResults.selectFirstOptionWithHigherDiscount();
 		
 		//8. Validate that cruise information is displayed for the selected one 
+		softAssertions.assertTrue(cruiseInformationPage.validateCruiseExpectedInformation(cruiseSearchResults.getTextAssertForSelect()), 
+				"Cruise information page does not shows the information of the expected cruise");
 		
 		softAssertions.assertAll();
 	}

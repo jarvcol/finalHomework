@@ -42,6 +42,7 @@ public class PaymentPage extends BasePage{
 	//Getters
 	
 	public String getPageTitle(){
+		getWait().until(ExpectedConditions.titleIs("Travelocity: Payment"));
 		return getDriver().getTitle().toString();
 	}
 	
