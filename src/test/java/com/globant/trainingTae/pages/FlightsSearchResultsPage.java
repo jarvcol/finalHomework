@@ -22,8 +22,8 @@ public class FlightsSearchResultsPage extends BasePage {
 	@FindBy(name="sort")
 	private WebElement sortButton;
 
-	@FindBy(id="flightModuleList")
-	private WebElement flightResultsList;
+	@FindBy(css="#flightModuleList li.flight-module.segment.offer-listing")
+	private List<WebElement> flightResultsList;
 	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
@@ -51,9 +51,8 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	private void selectFlightByNumberOnList(int position){
-		getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")));
-		WebElement flightSearchButton = getDriver().findElement(By.xpath("//*[@id='flightModuleList']/li["+position+"]//button[@data-test-id='select-button']"));
-		flightSearchButton.click();
+		getWait().until(ExpectedConditions.visibilityOfAllElements(flightResultsList));
+		flightResultsList.get(position-1).findElement(By.xpath(".//button[@data-test-id='select-button']")).click();
 	}
 	
 	public void closeOtherWindows(){
@@ -83,18 +82,17 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	private boolean validateSortByDurationDesc(){
-		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("#flightModuleList > .flight-module.segment.offer-listing"))));
-		List<WebElement> listOfItems = getDriver().findElements(By.xpath("//*[@data-test-id='duration']"));
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultsList)));
 		Duration prevValue=null, currValue=null;
-		for (WebElement element: listOfItems) {
+		for (WebElement element: flightResultsList) {
 			if(prevValue != null){
-				currValue = convertToDuration(element.getText());
+				currValue = convertToDuration(element.findElement(By.xpath(".//*[@data-test-id='duration']")).getText());
 				if(prevValue.toMinutes()>currValue.toMinutes()){
 					return false;
 				}
 				prevValue = currValue;
 			}else{
-				prevValue = convertToDuration(element.getText());
+				prevValue = convertToDuration(element.findElement(By.xpath(".//*[@data-test-id='duration']")).getText());
 			}
 		}
 		return true;
@@ -113,10 +111,8 @@ public class FlightsSearchResultsPage extends BasePage {
 		return auxConvert;
 	}
 	
-	
 	public boolean testAllElementsHaveSelectButton(){
-		if(getDriver().findElements(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")).size() == 
-				getDriver().findElements(By.xpath("//button[@data-test-id='select-button']")).size()){
+		if(flightResultsList.size() == getDriver().findElements(By.xpath("//button[@data-test-id='select-button']")).size()){
 			return true;
 		}else{
 			return false;
@@ -124,8 +120,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveFlightDuration(){
-		if(getDriver().findElements(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")).size() == 
-				getDriver().findElements(By.xpath("//*[@data-test-id='duration']")).size()){
+		if(flightResultsList.size() == getDriver().findElements(By.xpath("//*[@data-test-id='duration']")).size()){
 			return true;
 		}else{
 			return false;
@@ -133,8 +128,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveFlightDetails(){
-		if(getDriver().findElements(By.cssSelector("#flightModuleList li.flight-module.segment.offer-listing")).size() == 
-				getDriver().findElements(By.cssSelector(".flight-details-link.toggle-trigger")).size()){
+		if(flightResultsList.size() == getDriver().findElements(By.cssSelector(".flight-details-link.toggle-trigger")).size()){
 			return true;
 		}else{
 			return false;

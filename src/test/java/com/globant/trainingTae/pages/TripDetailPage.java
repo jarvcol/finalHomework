@@ -21,7 +21,10 @@ public class TripDetailPage extends BasePage{
 		private WebElement continueBookingButton;
 		
 		@FindBy(css=".packagePriceTotal")
-		private WebElement packagePriceTotal;					
+		private WebElement packagePriceTotal;
+		
+		@FindBy(css=".flex-card.flex-tile.details")
+		private List<WebElement> tripDetailSection;
 		
 		
 	//Methods......!!!!!!!!!!!!!!!!!
@@ -49,7 +52,7 @@ public class TripDetailPage extends BasePage{
 		}
 
 		public List<WebElement> getTripDetailSection() {
-			return getDriver().findElements(By.cssSelector(".flex-card.flex-tile.details"));
+			return tripDetailSection;
 		}
 	
 
