@@ -112,6 +112,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveSelectButton(){
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultsList)));
 		if(flightResultsList.size() == getDriver().findElements(By.xpath("//button[@data-test-id='select-button']")).size()){
 			return true;
 		}else{
@@ -120,6 +121,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveFlightDuration(){
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultsList)));
 		if(flightResultsList.size() == getDriver().findElements(By.xpath("//*[@data-test-id='duration']")).size()){
 			return true;
 		}else{
@@ -128,6 +130,7 @@ public class FlightsSearchResultsPage extends BasePage {
 	}
 	
 	public boolean testAllElementsHaveFlightDetails(){
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(flightResultsList)));
 		if(flightResultsList.size() == getDriver().findElements(By.cssSelector(".flight-details-link.toggle-trigger")).size()){
 			return true;
 		}else{
