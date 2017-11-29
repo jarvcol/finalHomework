@@ -106,7 +106,7 @@ public class TravelocityTest extends BaseTest {
 		home.clickOnFlightPlusHotelButton();
 		
 		//2. Search for a flight from LAS to LAX
-		home.selectAdultPassangers(adultPassanger); ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		home.selectAdultPassangersPkg(adultPassanger); ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		home.selectPackageDepartureCity(departureCode);
 		home.selectPackageArrivalCity(arrivalCode);
 		//Dates		
@@ -213,9 +213,9 @@ public class TravelocityTest extends BaseTest {
 		
 		//4. Complete the new dates fields with dates that are not included in the period. Do the search
 		LocalDate checkInDate = setTestDatePlusDays(returningDate,plusD, plusM, plusY);
-		home.selectDepartureDate(checkInDate.getYear()+"", (checkInDate.getMonthValue()-1)+"", checkInDate.getDayOfMonth()+"","packageHotel");
+		home.selectDepartureDate(checkInDate.getYear()+"", (checkInDate.getMonthValue()-1)+"", checkInDate.getDayOfMonth()+"","hotel");
 		LocalDate checkOutDate = setTestDatePlusDays(checkInDate,plusD, plusM, plusY);
-		home.selectArrivalDate(checkOutDate.getYear()+"", (checkOutDate.getMonthValue()-1)+"", checkOutDate.getDayOfMonth()+"","packageHotel");
+		home.selectArrivalDate(checkOutDate.getYear()+"", (checkOutDate.getMonthValue()-1)+"", checkOutDate.getDayOfMonth()+"","hotel");
 		
 		home.clickSearchForErros(formType);
 		
