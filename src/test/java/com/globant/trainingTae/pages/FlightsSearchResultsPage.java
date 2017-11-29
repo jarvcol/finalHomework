@@ -45,9 +45,9 @@ public class FlightsSearchResultsPage extends BasePage {
 		return new TripDetailPage(getDriver());
 	}
 	
-	public PackageTripDetailPage selectReturnFlightPkg(int position){
+	public CarSearchResultsPage selectReturnFlightPkg(int position){
 		selectFlightByNumberOnList(position);
-		return new PackageTripDetailPage(getDriver());
+		return new CarSearchResultsPage(getDriver());
 	}
 	
 	private void selectFlightByNumberOnList(int position){

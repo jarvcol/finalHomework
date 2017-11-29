@@ -42,6 +42,9 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(id="flight-adults-hp-flight")
 	private WebElement adultsDropDown;
 	
+	@FindBy(id="package-1-adults-hp-package")
+	private WebElement adultsDropDownPackage;
+	
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[1]/form/div[7]/label/button")
 	private WebElement onlyFlightSearchButton;
 	
@@ -102,11 +105,18 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[5]/form/button")
 	private WebElement onlyCruiseSearchButton;
 	
+	@FindBy(id="fhc-fhc-hp-package")
+	private WebElement flightHotelAndCarSubTypeButton;
+	
 	
 	//Methods......!!!!!!!!!!!!!!!!!
 	
 	public void clickOnCruiseButton(){
 		cruiseButton.click();
+	}
+	
+	public void clickOnFlightHotelAndCarSubTypeButton(){
+		flightHotelAndCarSubTypeButton.click();
 	}
 	
 	public void checkHotelForPartOfMyStay(){
@@ -146,6 +156,11 @@ public class TravelocityHomePage extends BasePage{
 		adultsDropDownSelect.selectByValue(adultPassangers+"");;
 	}
 	
+	public void selectAdultPassangersPkg(int adultPassangers){
+		Select adultsDropDownSelect = new Select(adultsDropDownPackage);
+		adultsDropDownSelect.selectByValue(adultPassangers+"");;
+	}
+	
 	public void selectFlightDepartureCity(String departureAirportCode){
 		departureFlightAirportInput.sendKeys(departureAirportCode);
 		departureFlightAirportInput.sendKeys(Keys.TAB);
@@ -166,7 +181,7 @@ public class TravelocityHomePage extends BasePage{
 			departureFlightDateInput.click();
 		if(type.equals("package"))
 			packageDepartureDateInput.click();
-		if(type.equals("packageHotel"))
+		if(type.equals("hotel"))
 			pkgCheckInDateInput.click();
 		WebElement date=null;
 		do{
@@ -187,7 +202,7 @@ public class TravelocityHomePage extends BasePage{
 			returningFlightDateInput.click();
 		if(type.equals("package"))
 			packageReturnDateInput.click();
-		if(type.equals("packageHotel"))
+		if(type.equals("hotel"))
 			pkgCheckOutDateInput.click();
 		WebElement date=null;
 		do{

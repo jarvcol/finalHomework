@@ -57,13 +57,13 @@ public class HotelSearchResultsPage extends BasePage {
 		default:
 			break;
 		}
-		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("article"))));
+		getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(hotelsResultsCardList)));
 	}
 	
-	public BookRoomsSelectionPage selectPackageBy(String sortOption, String selectionValue){
-		switch (sortOption) {
+	public BookRoomsSelectionPage selectPackageBy(String selectOption, String selectionValue){
+		switch (selectOption) {
 		case "Stars":
-			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("article"))));
+			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElements(hotelsResultsCardList)));
 			List<WebElement> hotelsList = getDriver().findElements(By.tagName("article"));
 			List<WebElement> starsList = getDriver().findElements(By.cssSelector(".star-rating.rating-secondary.star-rating [aria-hidden]"));
 			return selectPackageByStars(hotelsList,starsList,selectionValue);
@@ -81,44 +81,45 @@ public class HotelSearchResultsPage extends BasePage {
 				return new BookRoomsSelectionPage(getDriver());
 			}	
 		}
-		//If the original list of hotels does not have 3 stars, but there are more options
+		/*If the original list of hotels does not have 3 stars, but there are more options
 		if(getDriver().findElement(By.xpath("button[@class='pagination-next']")) != null){
 			getDriver().findElement(By.xpath("button[@class='pagination-next']")).click();
 			getWait().until(ExpectedConditions.refreshed(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.tagName("article"))));
 			return selectPackageByStars(getDriver().findElements(By.tagName("article")),getDriver().findElements(By.cssSelector(".star-rating.rating-secondary.star-rating [aria-hidden]")),starsNumber);
-		}
+		}*/
 		//Default in case hotel match, selects first element
 		hotelsList.get(0).click();
 		return new BookRoomsSelectionPage(getDriver()); 
 	}
 	
 	
+	
 	//Test and assertion methods
-		public boolean validateSortOfResults(String sortType){
-			switch (sortType) {
-			case "Price":
-				List<WebElement> resultsList = getDriver().findElements(By.cssSelector(".actualPrice.price.fakeLink"));
-				return validateSortByPrice(resultsList,0);
-			default:
-				return false;
-			}
+	public boolean validateSortOfResults(String sortType){
+		switch (sortType) {
+		case "Price":
+			List<WebElement> resultsList = getDriver().findElements(By.cssSelector(".actualPrice.price.fakeLink"));
+			return validateSortByPrice(resultsList,0);
+		default:
+			return false;
 		}
-		
-		private boolean validateSortByPrice(List<WebElement> resultsList, double prevValue){
-			double currValue=0;
-			for (WebElement element: resultsList) {
-				if(!(prevValue == 0)){
-					currValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
-					if(prevValue>currValue){
-						return false;
-					}
-					prevValue = currValue;
-				}else{
-					prevValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
+	}
+	
+	private boolean validateSortByPrice(List<WebElement> resultsList, double prevValue){
+		double currValue=0;
+		for (WebElement element: resultsList) {
+			if(!(prevValue == 0)){
+				currValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
+				if(prevValue>currValue){
+					return false;
 				}
+				prevValue = currValue;
+			}else{
+				prevValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
 			}
-			return true;
 		}
+		return true;
+	}
 		
 	public String getdataToValidateNextPage(){
 		String hotelName, stars, price;

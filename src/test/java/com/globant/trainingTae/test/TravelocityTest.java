@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.globant.trainingTae.pages.BookRoomsSelectionPage;
+import com.globant.trainingTae.pages.CarSearchResultsPage;
 import com.globant.trainingTae.pages.CruiseInformationPage;
 import com.globant.trainingTae.pages.CruiseSearchResultsPage;
 import com.globant.trainingTae.pages.HotelSearchResultsPage;
@@ -31,6 +32,7 @@ public class TravelocityTest extends BaseTest {
 	private PaymentPage payment;
 	private HotelSearchResultsPage hotelSearchResult;
 	private BookRoomsSelectionPage bookRoomsSelectionPage;
+	private CarSearchResultsPage carSearchResultPage;
 	private SoftAssert softAssertions;
 	
 	
@@ -104,9 +106,10 @@ public class TravelocityTest extends BaseTest {
 		
 		//1. Go to Flight + Hotel
 		home.clickOnFlightPlusHotelButton();
+		home.clickOnFlightHotelAndCarSubTypeButton();
 		
 		//2. Search for a flight from LAS to LAX
-		home.selectAdultPassangers(adultPassanger); ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		home.selectAdultPassangersPkg(adultPassanger); ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		home.selectPackageDepartureCity(departureCode);
 		home.selectPackageArrivalCity(arrivalCode);
 		//Dates		
@@ -141,19 +144,19 @@ public class TravelocityTest extends BaseTest {
 		flightSearchResult.selectDepartureFlight(positionFlight1);
 		
 		//9. In the new page (Now select your return flight), select the third result. 
-		pkgtripDetails = flightSearchResult.selectReturnFlightPkg(positionFlight2);
+		carSearchResultPage = flightSearchResult.selectReturnFlightPkg(positionFlight2);
 		
 		//10. Select a car
-		pkgtripDetails.clickOnFirstCarBook();
+		payment = carSearchResultPage.clickOnFirstCarBook();
 		
 		//11. Verify Trip Details.Press Continue button //Page where car is selected
 		//Asserts
-		softAssertions.assertNotNull(pkgtripDetails.getContinueButtonsList(), "Package trip detail page does not have the continue button");
+		/*softAssertions.assertNotNull(pkgtripDetails.getContinueButtonsList(), "Package trip detail page does not have the continue button");
 		softAssertions.assertNotNull(pkgtripDetails.getSaveTripLink(), "Package trip detail page does not have the save the trip link");
 		softAssertions.assertNotNull(pkgtripDetails.getTripTotal(), "Package trip detail page does not have the trip total value");
 		softAssertions.assertNotNull(pkgtripDetails.getCarButtonsList(), "Package trip detail page does not have the add car buttons");
 		softAssertions.assertTrue(pkgtripDetails.validateFlightRoute(departureCode, arrivalCode), "Package trip detail page does the expected airport codes");
-		payment = pkgtripDetails.clickOnContinueButton();
+		payment = pkgtripDetails.clickOnContinueButton();*/
 		
 		//12. Verify the trip details are still correct. Continue //13. Verify the “Who’s travelling” page
 		//Asserts
@@ -213,9 +216,9 @@ public class TravelocityTest extends BaseTest {
 		
 		//4. Complete the new dates fields with dates that are not included in the period. Do the search
 		LocalDate checkInDate = setTestDatePlusDays(returningDate,plusD, plusM, plusY);
-		home.selectDepartureDate(checkInDate.getYear()+"", (checkInDate.getMonthValue()-1)+"", checkInDate.getDayOfMonth()+"","packageHotel");
+		home.selectDepartureDate(checkInDate.getYear()+"", (checkInDate.getMonthValue()-1)+"", checkInDate.getDayOfMonth()+"","hotel");
 		LocalDate checkOutDate = setTestDatePlusDays(checkInDate,plusD, plusM, plusY);
-		home.selectArrivalDate(checkOutDate.getYear()+"", (checkOutDate.getMonthValue()-1)+"", checkOutDate.getDayOfMonth()+"","packageHotel");
+		home.selectArrivalDate(checkOutDate.getYear()+"", (checkOutDate.getMonthValue()-1)+"", checkOutDate.getDayOfMonth()+"","hotel");
 		
 		home.clickSearchForErros(formType);
 		

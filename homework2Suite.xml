@@ -4,12 +4,15 @@
 	<parameter name="browser" value="firefox"/>
     <test verbose="2" name="FinalHomeWork">
         <groups>
+        	<define name = "all">
+            	<include name="excercise1" />
+                <include name="excercise2" />
+                <include name="excercise3"/>
+                <include name="excercise4"/>
+                <include name="excercise5"/>
+         	</define>
             <run>
-                <exclude name="excercise2" />
-                <exclude name="excercise3" />
-                <exclude name="excercise4"/>
-                <exclude name="excercise5"/>
-                <include name="excercise1"/>
+                <include name="1"/>
             </run>
         </groups>
         <classes>
