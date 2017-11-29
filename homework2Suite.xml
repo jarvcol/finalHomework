@@ -12,7 +12,7 @@
                 <include name="excercise5"/>
          	</define>
             <run>
-                <include name="1"/>
+                <include name="excercise5"/>
             </run>
         </groups>
         <classes>
