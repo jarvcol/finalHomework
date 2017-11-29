@@ -42,6 +42,9 @@ public class TravelocityHomePage extends BasePage{
 	@FindBy(id="flight-adults-hp-flight")
 	private WebElement adultsDropDown;
 	
+	@FindBy(id="package-1-adults-hp-package")
+	private WebElement adultsDropDownPackage;
+	
 	@FindBy(xpath="/html/body/section/div/div/div/div[3]/div/div[1]/div/section[1]/form/div[7]/label/button")
 	private WebElement onlyFlightSearchButton;
 	
@@ -116,6 +119,10 @@ public class TravelocityHomePage extends BasePage{
 	
 	public void clickOnCruiseButton(){
 		cruiseButton.click();
+	}
+	
+	public void clickOnFlightHotelAndCarSubTypeButton(){
+		flightHotelAndCarSubTypeButton.click();
 	}
 	
 	public void checkHotelForPartOfMyStay(){

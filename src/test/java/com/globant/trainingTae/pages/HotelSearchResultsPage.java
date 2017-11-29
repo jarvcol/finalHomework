@@ -93,32 +93,33 @@ public class HotelSearchResultsPage extends BasePage {
 	}
 	
 	
+	
 	//Test and assertion methods
-		public boolean validateSortOfResults(String sortType){
-			switch (sortType) {
-			case "Price":
-				List<WebElement> resultsList = getDriver().findElements(By.cssSelector(".actualPrice.price.fakeLink"));
-				return validateSortByPrice(resultsList,0);
-			default:
-				return false;
-			}
+	public boolean validateSortOfResults(String sortType){
+		switch (sortType) {
+		case "Price":
+			List<WebElement> resultsList = getDriver().findElements(By.cssSelector(".actualPrice.price.fakeLink"));
+			return validateSortByPrice(resultsList,0);
+		default:
+			return false;
 		}
-		
-		private boolean validateSortByPrice(List<WebElement> resultsList, double prevValue){
-			double currValue=0;
-			for (WebElement element: resultsList) {
-				if(!(prevValue == 0)){
-					currValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
-					if(prevValue>currValue){
-						return false;
-					}
-					prevValue = currValue;
-				}else{
-					prevValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
+	}
+	
+	private boolean validateSortByPrice(List<WebElement> resultsList, double prevValue){
+		double currValue=0;
+		for (WebElement element: resultsList) {
+			if(!(prevValue == 0)){
+				currValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
+				if(prevValue>currValue){
+					return false;
 				}
+				prevValue = currValue;
+			}else{
+				prevValue = Double.parseDouble(element.getText().replaceAll("\\D", ""));
 			}
-			return true;
 		}
+		return true;
+	}
 		
 	public String getdataToValidateNextPage(){
 		String hotelName, stars, price;
